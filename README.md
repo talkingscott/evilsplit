@@ -19,3 +19,9 @@ Sample of adversarial training set. They look pretty clean and clearly-identifia
 Sample of adversarial test set. Lots of messed up digits, weird dots, etc.
 
 ![Testing images](testing_images.png)
+
+# Modification In This Fork
+
+When training the CNN on the adversarial split, the training data is augmented by creating new samples that update pixel values with uniform random interpolation with neighbor pixels.  Sadly, this is computationally intensive (in the current implementation, at least) and only raises the CNN test accuracy to 88%.
+
+Still, there may be other augmentation techniques that would do better.  For example, use VAE to find distributions in a latent space, then sample from those distributions to create new training samples.  Training the VAE will certainly be computationally intensive, too.

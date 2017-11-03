@@ -5,12 +5,15 @@ APIs involving TF model training.
 import numpy as np
 import tensorflow as tf
 
+from .augment import noop_augment
 from .mnist import get_data
 from .models import fully_connected_classifier
 
 BATCH_SIZE = 100
 
-def train_and_test(train_indices, test_indices, architecture=fully_connected_classifier):
+AUGMENT_MULTIPLE = 5
+
+def train_and_test(train_indices, test_indices, architecture=fully_connected_classifier, augment=noop_augment):
     """
     Train an MNIST classifier on the training data and
     compute its accuracy on the test data.
@@ -31,7 +34,7 @@ def train_and_test(train_indices, test_indices, architecture=fully_connected_cla
         with tf.Session() as sess:
             input_ph = tf.placeholder(tf.float32, shape=(None, 784))
             logits = architecture(input_ph)
-            _train(sess, input_ph, logits, *get_data(train_indices))
+            _train(sess, input_ph, logits, *augment(AUGMENT_MULTIPLE, *get_data(train_indices)))
             return _test(sess, input_ph, logits, *get_data(test_indices))
 
 

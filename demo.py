@@ -9,6 +9,7 @@ import matplotlib.pyplot
 import numpy as np
 
 from evilsplit.adversarial import min_accuracy_split
+from evilsplit.augment import simple_augment
 from evilsplit.mnist import sample_images
 from evilsplit.models import conv_classifier
 from evilsplit.train import train_and_test
@@ -22,8 +23,8 @@ def main():
     print('Creating minimum-accuracy split...')
     train_indices, test_indices = min_accuracy_split()
 
-    print('Training on adversarial split.')
-    corrects, _ = train_and_test(train_indices, test_indices, architecture=conv_classifier)
+    print('Training on adversarial split (with augmentation).')
+    corrects, _ = train_and_test(train_indices, test_indices, architecture=conv_classifier, augment=simple_augment)
     print('Mean accuracy: ' + str(np.mean(np.array(corrects).astype('float32'))))
 
     print('Plotting some samples.')
